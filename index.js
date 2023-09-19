@@ -47,12 +47,17 @@ const update = async () => {
 const reply = async () => {
     // eslint-disable-next-line no-unused-vars
   const {payload} = github.context
+  core.info(`GITHUB PAYLOAD: ${payload}`);
   const channelId = core.getInput('channel-id');
+  core.info(`CHANNEL ID INPUT: ${channelId}`);
   const botToken = core.getInput('slack-bot-token');
+  core.info(`STRING MATCHER INPUT: ${core.getInput('string-matcher')}`);
   // eslint-disable-next-line no-eval
   const stringMatcher = eval(core.getInput('string-matcher'));
+  core.info(`STRING MATCHER INPUT EVALUATED: ${stringMatcher}`);
   // eslint-disable-next-line no-eval
   const messages = eval(core.getInput('message'));
+  core.info(`MESSAGE INPUT: ${messages}`);
 
   const client = new WebClient(botToken);
   const conversations = await client.conversations.history({ token: botToken, channel: channelId })
@@ -90,7 +95,7 @@ const react = async () => {
 
 async function run() {
   const action = core.getInput('action');
-  core.info(process.env);
+  core.info(`ACTION INPUT: ${action}`);
 
   switch(action) {
     case POST_ACTION:
