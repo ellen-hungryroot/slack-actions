@@ -56,9 +56,13 @@ const reply = async () => {
   const botToken = core.getInput('slack-bot-token');
   const stringMatcher = core.getInput('string-matcher');
   core.info(`STRING MATCHER INPUT: ${stringMatcher}`);
+  core.info(`MESSAGE INPUT: ${core.getInput('message')}`);
+  core.info(`payload.review: ${payload.review}`);
+  core.info(`payload.review.user: ${payload.review.user}`);
+  core.info(`payload.review.user.name: ${payload.review.user.name}`);
   // eslint-disable-next-line no-eval
   const messages = eval(core.getInput('message'));
-  core.info(`MESSAGE INPUT: ${messages}`);
+  core.info(`EVAL MESSAGE: ${messages}`);
 
   const client = new WebClient(botToken);
   const conversations = await client.conversations.history({ token: botToken, channel: channelId })
