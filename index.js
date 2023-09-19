@@ -47,23 +47,9 @@ const update = async () => {
 const reply = async () => {
   // eslint-disable-next-line no-unused-vars
   const {payload} = github.context
-  core.info(`GITHUB PAYLOAD`);
-  for (const [key, value] of Object.entries(payload)) {
-    core.info(`${key}: ${value}`);
-  }
-  core.info(`-----GITHUB PAYLOAD PULL_REQUEST`);
-  for (const [key, value] of Object.entries(payload.pull_request)) {
-    core.info(`${key}: ${value}`);
-  }
-  core.info(`-----------GITHUB PAYLOAD PULL_REQUEST BASE`);
-  for (const [key, value] of Object.entries(payload.pull_request.base)) {
-    core.info(`${key}: ${value}`);
-  }
   const channelId = core.getInput('channel-id');
-  core.info(`CHANNEL ID INPUT: ${channelId}`);
   const botToken = core.getInput('slack-bot-token');
-  // eslint-disable-next-line no-eval
-  const stringMatcher = eval(core.getInput('string-matcher'));
+  const stringMatcher = core.getInput('string-matcher');
   core.info(`STRING MATCHER INPUT: ${stringMatcher}`);
   core.info(`MESSAGE INPUT: ${core.getInput('message')}`);
   // eslint-disable-next-line no-eval
@@ -71,7 +57,6 @@ const reply = async () => {
   core.info(`EVAL MESSAGE: ${messages}`);
 
   const client = new WebClient(botToken);
-  core.info("CLIENT CREATED")
   try {
     const conversations = await client.conversations.history({ token: botToken, channel: channelId })
   } catch (err){
