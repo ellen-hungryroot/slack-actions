@@ -45,7 +45,7 @@ const update = async () => {
 }
 
 const reply = async () => {
-    // eslint-disable-next-line no-unused-vars
+  // eslint-disable-next-line no-unused-vars
   const {payload} = github.context
   core.info(`GITHUB PAYLOAD: ${payload}`);
   const channelId = core.getInput('channel-id');
@@ -53,7 +53,8 @@ const reply = async () => {
   const botToken = core.getInput('slack-bot-token');
   const stringMatcher = core.getInput('string-matcher');
   core.info(`STRING MATCHER INPUT: ${stringMatcher}`);
-  const messages = core.getInput('message');
+  // eslint-disable-next-line no-eval
+  const messages = eval(core.getInput('message'));
   core.info(`MESSAGE INPUT: ${messages}`);
 
   const client = new WebClient(botToken);
