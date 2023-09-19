@@ -50,24 +50,19 @@ const reply = async () => {
   const channelId = core.getInput('channel-id');
   const botToken = core.getInput('slack-bot-token');
   const stringMatcher = core.getInput('string-matcher');
-  core.info(`STRING MATCHER INPUT: ${stringMatcher}`);
-  core.info(`MESSAGE INPUT: ${core.getInput('message')}`);
   // eslint-disable-next-line no-eval
   const messages = eval(core.getInput('message'));
-  core.info(`EVAL MESSAGE: ${messages}`);
 
   const client = new WebClient(botToken);
   try {
     const conversations = await client.conversations.history({ token: botToken, channel: channelId })
-  } catch (err){
-    core.info(err)
+  } catch (err) {
+    core.setFailed(err);
+    return;
   }
-  core.info(`CONVERSATIONS FOUND: ${conversations.messages.length}`)
   const message = conversations.messages.find((m)=> m.text.includes(stringMatcher))
-  core.info(`MESSAGE FOUND: ${message}`)
 
   if (message !== undefined){
-    core.info("posting message")
     await client.chat.postMessage({ token: botToken, channel: channelId , thread_ts: message.ts, text: messages})
   } else {
     core.setFailed('Message could not be found');
@@ -99,7 +94,6 @@ const react = async () => {
 
 async function run() {
   const action = core.getInput('action');
-  core.info(`ACTION INPUT: ${action}`);
 
   switch(action) {
     case POST_ACTION:
