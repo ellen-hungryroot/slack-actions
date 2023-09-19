@@ -51,8 +51,16 @@ const reply = async () => {
   for (const [key, value] of Object.entries(payload)) {
     core.info(`${key}: ${value}`);
   }
-  core.info(`GITHUB PAYLOAD SENDER`);
-  for (const [key, value] of Object.entries(payload.sender)) {
+  core.info(`GITHUB PAYLOAD REVIEW`);
+  for (const [key, value] of Object.entries(payload.review)) {
+    core.info(`${key}: ${value}`);
+  }
+  core.info(`GITHUB PAYLOAD REVIEW USER`);
+  for (const [key, value] of Object.entries(payload.review.user)) {
+    core.info(`${key}: ${value}`);
+  }
+  core.info(`GITHUB PAYLOAD PULL_REQUEST`);
+  for (const [key, value] of Object.entries(payload.pull_request)) {
     core.info(`${key}: ${value}`);
   }
   const channelId = core.getInput('channel-id');
@@ -61,17 +69,17 @@ const reply = async () => {
   const stringMatcher = core.getInput('string-matcher');
   core.info(`STRING MATCHER INPUT: ${stringMatcher}`);
   core.info(`MESSAGE INPUT: ${core.getInput('message')}`);
-  core.info(`payload.review: ${payload.review}`);
-  core.info(`payload.review.user: ${payload.review.user}`);
-  core.info(`payload.review.user.name: ${payload.review.user.name}`);
-  core.info(`payload.review.user.email: ${payload.review.user.email}`);
   // eslint-disable-next-line no-eval
   const messages = eval(core.getInput('message'));
   core.info(`EVAL MESSAGE: ${messages}`);
 
   const client = new WebClient(botToken);
   core.info("CLIENT CREATED")
-  const conversations = await client.conversations.history({ token: botToken, channel: channelId })
+  try {
+    const conversations = await client.conversations.history({ token: botToken, channel: channelId })
+  } catch (err){
+    core.info(err)
+  }
   core.info(`CONVERSATIONS FOUND: ${conversations.messages.length}`)
   const message = conversations.messages.find((m)=> m.text.includes(stringMatcher))
   core.info(`MESSAGE FOUND: ${message}`)
