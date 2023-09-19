@@ -51,22 +51,19 @@ const reply = async () => {
   for (const [key, value] of Object.entries(payload)) {
     core.info(`${key}: ${value}`);
   }
-  core.info(`GITHUB PAYLOAD REVIEW`);
-  for (const [key, value] of Object.entries(payload.review)) {
-    core.info(`${key}: ${value}`);
-  }
-  core.info(`GITHUB PAYLOAD REVIEW USER`);
-  for (const [key, value] of Object.entries(payload.review.user)) {
-    core.info(`${key}: ${value}`);
-  }
-  core.info(`GITHUB PAYLOAD PULL_REQUEST`);
+  core.info(`-----GITHUB PAYLOAD PULL_REQUEST`);
   for (const [key, value] of Object.entries(payload.pull_request)) {
+    core.info(`${key}: ${value}`);
+  }
+  core.info(`-----------GITHUB PAYLOAD PULL_REQUEST BASE`);
+  for (const [key, value] of Object.entries(payload.pull_request.base)) {
     core.info(`${key}: ${value}`);
   }
   const channelId = core.getInput('channel-id');
   core.info(`CHANNEL ID INPUT: ${channelId}`);
   const botToken = core.getInput('slack-bot-token');
-  const stringMatcher = core.getInput('string-matcher');
+  // eslint-disable-next-line no-eval
+  const stringMatcher = eval(core.getInput('string-matcher'));
   core.info(`STRING MATCHER INPUT: ${stringMatcher}`);
   core.info(`MESSAGE INPUT: ${core.getInput('message')}`);
   // eslint-disable-next-line no-eval
