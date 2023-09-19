@@ -90,28 +90,26 @@ const react = async () => {
 
 async function run() {
   const action = core.getInput('action');
-  try {
-    switch(action) {
-      case POST_ACTION:
-        await post()
-        break;
-      case UPDATE_ACTION:
-        await update()
-        break;
-      case REPLY_ACTION:
-        await reply()
-        break;
-      case REACT_ACTION:
-        await react()
-        break;
-      default:
-        core.setFailed(`Action ${action} does not exist`);
-        break;
-    }
-  } catch (error){
-    core.setFailed(error.message);
-    throw error;
+  core.debug(process.env);
+
+  switch(action) {
+    case POST_ACTION:
+      await post()
+      break;
+    case UPDATE_ACTION:
+      await update()
+      break;
+    case REPLY_ACTION:
+      await reply()
+      break;
+    case REACT_ACTION:
+      await react()
+      break;
+    default:
+      core.setFailed(`Action ${action} does not exist`);
+      break;
   }
+ 
 }
 
 run();
