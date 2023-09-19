@@ -90,7 +90,7 @@ const react = async () => {
 
 async function run() {
   const action = core.getInput('action');
-  core.debug(process.env);
+  core.info(process.env);
 
   switch(action) {
     case POST_ACTION:
