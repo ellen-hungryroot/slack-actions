@@ -3,7 +3,7 @@ const github = require('@actions/github');
 const core = require('@actions/core');
 
 const POST_ACTION = 'post'
-const UPDATE_ACTION = 'update' 
+const UPDATE_ACTION = 'update'
 const REPLY_ACTION = 'reply'
 const REACT_ACTION = 'react'
 
@@ -36,7 +36,7 @@ const update = async () => {
   const client = new WebClient(botToken);
   const conversations = await client.conversations.history({ token: botToken, channel: channelId })
   const message = conversations.messages.find((m)=> m.text.includes(stringMatcher))
-  
+
   if (message !== undefined){
     await client.chat.update({ token: botToken, channel: channelId , ts: message.ts, text: messages})
   } else {
@@ -51,18 +51,15 @@ const reply = async () => {
   const channelId = core.getInput('channel-id');
   core.info(`CHANNEL ID INPUT: ${channelId}`);
   const botToken = core.getInput('slack-bot-token');
-  core.info(`STRING MATCHER INPUT: ${core.getInput('string-matcher')}`);
-  // eslint-disable-next-line no-eval
-  const stringMatcher = eval(core.getInput('string-matcher'));
-  core.info(`STRING MATCHER INPUT EVALUATED: ${stringMatcher}`);
-  // eslint-disable-next-line no-eval
-  const messages = eval(core.getInput('message'));
+  const stringMatcher = core.getInput('string-matcher');
+  core.info(`STRING MATCHER INPUT: ${stringMatcher}`);
+  const messages = core.getInput('message');
   core.info(`MESSAGE INPUT: ${messages}`);
 
   const client = new WebClient(botToken);
   const conversations = await client.conversations.history({ token: botToken, channel: channelId })
   const message = conversations.messages.find((m)=> m.text.includes(stringMatcher))
-  
+
   if (message !== undefined){
     await client.chat.postMessage({ token: botToken, channel: channelId , thread_ts: message.ts, text: messages})
   } else {
@@ -85,7 +82,7 @@ const react = async () => {
   const client = new WebClient(botToken);
   const conversations = await client.conversations.history({ token: botToken, channel: channelId })
   const message = conversations.messages.find((m)=> m.text.includes(stringMatcher))
-  
+
   if (message !== undefined){
     await client.reactions.add({ token: botToken, channel: channelId, name: messages })
   } else {
@@ -114,7 +111,7 @@ async function run() {
       core.setFailed(`Action ${action} does not exist`);
       break;
   }
- 
+
 }
 
 run();
