@@ -105,7 +105,7 @@ async function run() {
         await react()
         break;
       default:
-        core.setFailed('Action does not exist');
+        core.setFailed(`Action ${action} does not exist`);
         break;
     }
   } catch (error){
