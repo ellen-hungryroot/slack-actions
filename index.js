@@ -47,18 +47,6 @@ const update = async () => {
 const reply = async () => {
   // eslint-disable-next-line no-unused-vars
   const {payload} = github.context
-  core.info("PAYLOAD")
-  for (const[key, value] of Object.entries(payload)) {
-    core.info(`${key}: ${value}`);
-  }
-  core.info("---PAYLOAD.PULL_REQUEST")
-  for (const[key, value] of Object.entries(payload.pull_request)) {
-    core.info(`${key}: ${value}`);
-  }
-  core.info("---PAYLOAD.REVIEW")
-  for (const[key, value] of Object.entries(payload.review)) {
-    core.info(`${key}: ${value}`);
-  }
   const channelId = core.getInput('channel-id');
   const botToken = core.getInput('slack-bot-token');
   const stringMatcher = core.getInput('string-matcher');
@@ -69,25 +57,8 @@ const reply = async () => {
   let message;
   try {
     const conversations = await client.conversations.history({ token: botToken, channel: channelId })
-    core.info("CONVERSATIONS")
-    core.info(conversations)
-
-    core.info("CONVERSATIONS.MESSAGES")
-    core.info(conversations.messages)
-    for (const m of conversations.messages) {
-      core.info("new message")
-      for (const[key, value] of Object.entries(m)) {
-        core.info(`${key}: ${value}`);
-      }
-    }
-    core.info("stringMatcher")
-    core.info(stringMatcher)
     message = conversations.messages.find((m)=> m.text.includes(stringMatcher))
-    core.info("MESSAGE")
-    core.info(message)
   } catch (err) {
-    core.info("error on retrieving conversations")
-    core.info(err)
     core.setFailed(err);
     return;
   }
@@ -96,8 +67,6 @@ const reply = async () => {
     try {
       await client.chat.postMessage({ token: botToken, channel: channelId , thread_ts: message.ts, text: messages})
     } catch (err) {
-      core.info("error on posting message")
-      core.info(err)
       core.setFailed(err);
       return;
     }
