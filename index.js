@@ -47,6 +47,14 @@ const update = async () => {
 const reply = async () => {
   // eslint-disable-next-line no-unused-vars
   const {payload} = github.context
+  core.info("PAYLOAD")
+  for (const[key, value] of Object.entries(payload)) {
+    core.info(`${key}: ${value}`);
+  }
+  core.info("---PAYLOAD.REVIEW")
+  for (const[key, value] of Object.entries(payload.review)) {
+    core.info(`${key}: ${value}`);
+  }
   const channelId = core.getInput('channel-id');
   const botToken = core.getInput('slack-bot-token');
   const stringMatcher = core.getInput('string-matcher');
