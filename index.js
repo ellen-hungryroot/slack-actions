@@ -51,6 +51,10 @@ const reply = async () => {
   for (const[key, value] of Object.entries(payload)) {
     core.info(`${key}: ${value}`);
   }
+  core.info("---PAYLOAD.PULL_REQUEST")
+  for (const[key, value] of Object.entries(payload.pull_request)) {
+    core.info(`${key}: ${value}`);
+  }
   core.info("---PAYLOAD.REVIEW")
   for (const[key, value] of Object.entries(payload.review)) {
     core.info(`${key}: ${value}`);
