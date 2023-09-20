@@ -62,6 +62,14 @@ const reply = async () => {
 
     core.info("CONVERSATIONS.MESSAGES")
     core.info(conversations.messages)
+    for (const m of conversations.messages) {
+      core.info("new message")
+      for (const[key, value] of Object.entries(m)) {
+        core.info(`${key}: ${value}`);
+      }
+    }
+    core.info("stringMatcher")
+    core.info(stringMatcher)
     message = conversations.messages.find((m)=> m.text.includes(stringMatcher))
     core.info("MESSAGE")
     core.info(message)
