@@ -54,22 +54,23 @@ const reply = async () => {
   const messages = eval(core.getInput('message'));
 
   const client = new WebClient(botToken);
+  let message;
   try {
     const conversations = await client.conversations.history({ token: botToken, channel: channelId })
     core.info("CONVERSATIONS")
     core.info(conversations)
+
+    core.info("CONVERSATIONS.MESSAGES")
+    core.info(conversations.messages)
+    message = conversations.messages.find((m)=> m.text.includes(stringMatcher))
+    core.info("MESSAGE")
+    core.info(message)
   } catch (err) {
     core.info("error on retrieving conversations")
     core.info(err)
     core.setFailed(err);
     return;
   }
-
-  core.info("CONVERSATIONS.MESSAGES")
-  core.info(conversations.messages)
-  const message = conversations.messages.find((m)=> m.text.includes(stringMatcher))
-  core.info("MESSAGE")
-  core.info(message)
 
   if (message !== undefined) {
     try {
