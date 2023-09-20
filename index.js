@@ -57,13 +57,28 @@ const reply = async () => {
   try {
     const conversations = await client.conversations.history({ token: botToken, channel: channelId })
   } catch (err) {
+    core.info("error on retrieving conversations")
+    core.info(err)
     core.setFailed(err);
     return;
   }
+  core.info("CONVERSATIONS")
+  core.info(conversations)
+  core.info("CONVERSATIONS.MESSAGES")
+  core.info(conversations.messages)
   const message = conversations.messages.find((m)=> m.text.includes(stringMatcher))
+  core.info("MESSAGE")
+  core.info(message)
 
-  if (message !== undefined){
-    await client.chat.postMessage({ token: botToken, channel: channelId , thread_ts: message.ts, text: messages})
+  if (message !== undefined) {
+    try {
+      await client.chat.postMessage({ token: botToken, channel: channelId , thread_ts: message.ts, text: messages})
+    } catch (err) {
+      core.info("error on posting message")
+      core.info(err)
+      core.setFailed(err);
+      return;
+    }
   } else {
     core.setFailed('Message could not be found');
   }
